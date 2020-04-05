@@ -1,0 +1,12 @@
+{
+  "name": "project-common",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  },
+  "scripts": {
+    "all": "make setup_env && concurrently  --kill-others-on-fail --names HASURA,HASURA_CONSOLE,NGROK,SLS \"make hasura_up_delay\" \"make hasura_console_delay\" \"make ngrok_silent\" \"make sls_local\""
+  }
+}

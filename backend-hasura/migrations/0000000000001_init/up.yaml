@@ -1,0 +1,42 @@
+- args:
+    tables:
+    - object_relationships:
+      - name: owner
+        using:
+          foreign_key_constraint_on: owner_id
+      table:
+        name: tokens
+        schema: public
+    - array_relationships:
+      - name: tokens
+        using:
+          foreign_key_constraint_on:
+            column: owner_id
+            table:
+              name: tokens
+              schema: public
+      select_permissions:
+      - permission:
+          columns:
+          - id
+          - email
+          - name
+          - picture
+          - created_at
+          - updated_at
+          - jwt_valid_after
+          - deleted_at
+          - given_name
+          - family_name
+          filter:
+            _and:
+            - jwt_valid_after:
+                _lte: X-Hasura-Issued-At
+            - id:
+                _eq: X-Hasura-User-Id
+        role: user
+      table:
+        name: users
+        schema: public
+    version: 2
+  type: replace_metadata

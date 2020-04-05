@@ -1,0 +1,35 @@
+{
+  "folders": [
+    {
+      "path": "backend-hasura"
+    },
+    {
+      "path": "backend-terraform"
+    },
+    {
+      "path": "common"
+    },
+    {
+      "path": "backend-lambdas"
+    }
+  ],
+  "settings": {
+    "workbench.colorCustomizations": {
+      "activityBar.background": "#8540f5",
+      "activityBar.activeBackground": "#8540f5",
+      "activityBar.activeBorder": "#f58b49",
+      "activityBar.foreground": "#e7e7e7",
+      "activityBar.inactiveForeground": "#e7e7e799",
+      "activityBarBadge.background": "#f58b49",
+      "activityBarBadge.foreground": "#15202b",
+      "titleBar.activeBackground": "#6610f2",
+      "titleBar.inactiveBackground": "#6610f299",
+      "titleBar.activeForeground": "#e7e7e7",
+      "titleBar.inactiveForeground": "#e7e7e799",
+      "statusBar.background": "#6610f2",
+      "statusBarItem.hoverBackground": "#8540f5",
+      "statusBar.foreground": "#e7e7e7"
+    },
+    "peacock.color": "#6610f2"
+  }
+}

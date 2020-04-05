@@ -1,0 +1,45 @@
+{
+  "name": "backend-lambdas",
+  "version": "1.0.0",
+  "description": "Serverless webpack example using Typescript",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "source-map-support": "^0.5.10",
+    "@graphql-codegen/typescript-resolvers": "^1.8.1",
+    "@types/uuid": "^3.4.6",
+    "apollo-boost": "^0.4.4",
+    "graphql": "^14.5.8",
+    "graphql-request": "^1.8.2",
+    "graphql-tag": "^2.10.1",
+    "jsonwebtoken": "^8.5.1",
+    "luxon": "^1.21.0",
+    "stripe": "^8.7.0",
+    "ts-optchain": "^0.1.8",
+    "uuid": "^3.4.0",
+    "apollo-server": "^2.9.6",
+    "apollo-server-lambda": "^2.9.6",
+    "cross-fetch": "^3.0.4"
+  },
+  "devDependencies": {
+    "@graphql-codegen/add": "^1.8.1",
+    "@graphql-codegen/cli": "^1.8.1",
+    "@graphql-codegen/typescript": "^1.8.1",
+    "@graphql-codegen/typescript-graphql-request": "^1.8.1",
+    "@graphql-codegen/typescript-operations": "^1.8.1",
+    "@types/aws-lambda": "^8.10.33",
+    "@types/luxon": "^1.21.0",
+    "@types/node": "^12.11.1",
+    "serverless": "^1.54.0",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-offline": "^5.12.1",
+    "serverless-webpack": "^5.2.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.3",
+    "webpack": "^4.29.0"
+  },
+  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "license": "MIT"
+}

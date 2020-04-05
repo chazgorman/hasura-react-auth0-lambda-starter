@@ -1,0 +1,56 @@
+version: "3.6"
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "${HASURA_POSTGRES_EXPOSED_PORT}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  graphql-engine:
+    image: hasura/graphql-engine:v1.1.0
+    ports:
+      - "${HASURA_EXPOSED_PORT}:8080"
+    depends_on:
+      - "postgres"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS512", "key": "${HASURA_GRAPHQL_JWT_KEY_RAW}"}'
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
+      LAMBDA_ENDPOINT: ${LAMBDA_ENDPOINT}
+      LAMBDA_HASURA_EVENT_HANDLER: ${LAMBDA_HASURA_EVENT_HANDLER}
+      ## uncomment next line to set an admin secret
+      # speedycal-dev.ngrok.io
+      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+volumes:
+  db_data:
+# version: "3.6"
+# # services:
+#   postgres:
+#     image: postgres
+#     restart: always
+#     volumes:
+#       - db_data:/var/lib/postgresql/data
+#     ports:
+#       - "15432:5432"
+#   graphql-engine:
+#     image: hasura/graphql-engine:v1.0.0-beta.6
+#     ports:
+#       - "18080:8080"
+#     depends_on:
+#       - "postgres"
+#     restart: always
+#     environment:
+#       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+#       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+#       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+#       ## uncomment next line to set an admin secret
+#       HASURA_GRAPHQL_ADMIN_SECRET: "devmodetngco234hasura"
+#       HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS512", "key": "-----BEGIN CERTIFICATE-----\nMIIDATCCAemgAwIBAgIJNnS2zy2uO3BRMA0GCSqGSIb3DQEBCwUAMB4xHDAaBgNV\nBAMTE3RuZ2NvLWRldi5hdXRoMC5jb20wHhcNMTkwOTA1MTg0MjAyWhcNMzMwNTE0\nMTg0MjAyWjAeMRwwGgYDVQQDExN0bmdjby1kZXYuYXV0aDAuY29tMIIBIjANBgkq\nhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr1qFJgQpd7poY1T2sdj9tFzRGNacdBr3\n4GwB3s+0+7aF+mQxTcmwdTUJmEbupuKHM1aFebfADIvrQzi1DaG7rq1A5JrpYTsS\nMaDM6zvI5WNjSCQuhw166Hcp6/LEcOPpq5p4cVGJvlxAz4VnhREh/dSj3BCvs1Ni\nPpZdv6UOHwZm5XL43NqstNbxjryiMGo1iZw1kLFqxDOTerBzELF2rNCR+dfxblTn\n+xqFWsvx+cB1XKjdeI35I9iaXCsUa14i/2z1LBuKhZ01oXag//Mn7oAZTZevGKOm\nKwkcy1Bi3d+BJ8EWNQUQkyMswl2LQO7c708wP8FptTVeVgADuk2jvwIDAQABo0Iw\nQDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSETjV5AdJ95dZGMr7b7kihY868\n5jAOBgNVHQ8BAf8EBAMCAoQwDQYJKoZIhvcNAQELBQADggEBAEQIiSJcX3mmpQce\na8LjyszwB/Zr2ySLCGpH0y55HOZ4GtRp1208LOOXGipG96a9wIyGYFK1qrNEVGxX\nOGmwAv4x5UYLkzg5S26aSpuIgzX0j9P4KPbQrp8N3+T/zzJ1yw3nwrrWRRNmw14H\noNmWE4nLJev38WkoGP1yZt0KLMK0kRCygBpOPykp0yUzFYDlP4XsjUVCys4KWcBO\nwLxx8rRXWObKilIGPsvQ1DNGl+hp4sJ+9rFXS2aBmgCA9dNTCm73TIB78Ki0puXb\nyLbfl5NITdT6DOhyIxKKz6G4K98AF/getUy16D3x9r2oNTiWEZelcMPhhvFCybSh\n3i1KwxU=\n-----END CERTIFICATE-----\n"}'
+# volumes:
+#   db_data:

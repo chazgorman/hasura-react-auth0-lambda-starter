@@ -1,0 +1,31 @@
+overwrite: true
+config:
+  withHooks: true
+  withMutationFn: true
+  withHOC: false
+  strict: true
+  reactApolloVersion: 3
+generates:
+  ./src/__generated__/resolvers.ts:
+    schema: ./src/__generated__/lambda_schema.json
+    # documents:
+    #   - handler.ts
+    #   - "!**/__generated__/**/*"
+    #   # - ./src/**/*.ts
+    # config:
+    # avoidOptionals: true
+    plugins:
+      - add: "// tslint:disable:array-type"
+      - typescript
+      - typescript-resolvers
+
+  ./src/__generated__/requests.ts:
+    schema: ./src/__generated__/schema.json
+    documents:
+      - ./src/**/*.graphql
+      - "!**/__generated__/**/*"
+    plugins:
+      - add: "// tslint:disable:array-type"
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request

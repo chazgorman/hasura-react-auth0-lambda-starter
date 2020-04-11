@@ -1,0 +1,39 @@
+overwrite: true
+config:
+  withHooks: true
+  withMutationFn: true
+  withComponent: false
+  withHOC: false
+  strict: true
+  reactApolloVersion: 3
+  #   apolloReactCommonImportFrom: "@apollo/react-common"
+  #   apolloReactHooksImportFrom: "@apollo/react-hooks"
+  scalars:
+    DateTime: string
+    timestamptz: string
+    time: string
+    uuid: string
+    date: string
+    JSON: "{ [key: string]: any }"
+    jsonb: "{ [key: string]: any }"
+generates:
+  ./src/__generated__/components.tsx:
+    schema: ./src/__generated__/schema.json
+    documents:
+      - ./src/**/*.graphql
+    plugins:
+      - add: "// tslint:disable:array-type"
+      - typescript:
+      - typescript-operations:
+          # exportFragmentSpreadSubTypes: true
+          # flattenGeneratedTypes: true
+      - typescript-react-apollo
+  ./src/__generated__/requests.ts:
+    schema: ./src/__generated__/schema.json
+    documents:
+      - ./src/**/*.graphql
+    plugins:
+      - add: "// tslint:disable:array-type"
+      - typescript:
+      - typescript-operations:
+      - typescript-graphql-request

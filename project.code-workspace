@@ -11,6 +11,9 @@
     },
     {
       "path": "backend-lambdas"
+    },
+    {
+      "path": "frontend-react"
     }
   ],
   "settings": {

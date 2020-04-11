@@ -11,8 +11,13 @@ tunnels:
     bind_tls: true
     addr: ${LAMBDA_LOCAL_PORT}
     subdomain: ${SUBDOMAIN_LAMBDAS}
-  hasura:
+  console:
     proto: http
     addr: ${HASURA_CONSOLE_PORT}
+    bind_tls: true
+    subdomain: ${SUBDOMAIN_HASURA_CONSOLE}
+  hasura:
+    proto: http
+    addr: ${HASURA_EXPOSED_PORT}
     bind_tls: true
     subdomain: ${SUBDOMAIN_HASURA}

@@ -12,7 +12,7 @@ set -e
 # export TF_VAR_hasura_lambda_event_handler=$(echo $SLS_ALL | sed -e 's/.*POST - \(https[^ ]*\/hasura_event_handler\).*/\1/')
 # cd -
 
-export $(grep -v '^#' ../common/.env.${ENV} | sed -e 's/\\n/__NEWLINE__/g' | sed -e 's/=__NEWLINE__-----END CERTIFICATE-----__NEWLINE__/__END_CERT__/' | sed -e 's/ /__SPACE__/g' | xargs)
+# export $(grep -v '^#' ../common/.env.${ENV} | sed -e 's/\\n/__NEWLINE__/g' | sed -e 's/=__NEWLINE__-----END CERTIFICATE-----__NEWLINE__/__END_CERT__/' | sed -e 's/ /__SPACE__/g' | xargs)
 
 echo "Env: ${ENV} hasura domain: ${HASURA_TF_AWS_DOMAIN}"
 
@@ -37,7 +37,7 @@ export TF_VAR_static_site="https://www.example.com"
 export TF_VAR_app_site="${REACT_APP_BASE_URI}"
 export TF_VAR_app_domain="${REACT_APP_DOMAIN}"
 
-export TF_VAR_authzero_app_type=native
+export TF_VAR_authzero_app_type=spa
 export TF_VAR_authzero_domain=$REACT_APP_AUTH0_DOMAIN
 export TF_VAR_authzero_description=$TF_AUTH0_DESCRIPTION
 export TF_VAR_authzero_mgmt_client_id=$TF_AUTH0_API_CLIENT_ID

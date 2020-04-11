@@ -42,6 +42,14 @@ tf_setup:
 	cd ../backend-terraform ; \
 	./init-tf-bucket.sh
 
+tf_authzero_init:
+	cd ../backend-terraform ; \
+	./run-terraform-authzero.sh init
+
+tf_authzero_apply:
+	cd ../backend-terraform ; \
+	./run-terraform-authzero.sh apply
+
 
 ###### OLD COMMANDS: 
 

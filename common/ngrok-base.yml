@@ -5,14 +5,14 @@ tunnels:
     proto: http
     bind_tls: true
     addr: 3000
-    subdomain: ${DOMAIN_APP}
+    subdomain: ${SUBDOMAIN_APP}
   lambdas:
     proto: http
     bind_tls: true
     addr: ${LAMBDA_LOCAL_PORT}
-    subdomain: ${DOMAIN_LAMBDAS}
+    subdomain: ${SUBDOMAIN_LAMBDAS}
   hasura:
     proto: http
     addr: ${HASURA_CONSOLE_PORT}
     bind_tls: true
-    subdomain: ${DOMAIN_HASURA}
+    subdomain: ${SUBDOMAIN_HASURA}

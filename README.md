@@ -32,3 +32,5 @@ make tf_authzero_apply
 
 In Auth0, find the client Id for your newly created application and set the `REACT_APP_AUTH0_CLIENT_ID`
 variable in .env.development.base
+
+Navigate to https://app-max-dev-project-starter.ngrok.io/

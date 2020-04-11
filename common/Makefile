@@ -112,6 +112,18 @@ hasura_migrate_apply:
 	cd ../backend-hasura; \
 	hasura migrate apply --skip-update-check --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET} --endpoint http://localhost:${HASURA_EXPOSED_PORT} 
 
+hasura_hard_reset:
+	# export $(grep -v '^#' ../sc-common/.env.production | sed -e 's/\\n/__NEWLINE__/g' | sed -e 's/=__NEWLINE__-----END CERTIFICATE-----__NEWLINE__/__END_CERT__/' | sed -e 's/ /__SPACE__/g' | xargs) ; 
+	read -p "Are you sure you want to migrate to $${REMOTE_ENDPOINT} [y/n]? " -n 1 -r; \
+	if [[ $$REPLY =~ ^[Yy] ]]; \
+	then \
+		printf "\nyes going ahead\n"; \
+		cd ../backend-hasura; \
+		docker-compose down --rmi all --volumes; \
+	else \
+		printf "\n skipping\n"  ;\
+	fi
+
 hasura_migrate_apply_production:
 	# export $(grep -v '^#' ../sc-common/.env.production | sed -e 's/\\n/__NEWLINE__/g' | sed -e 's/=__NEWLINE__-----END CERTIFICATE-----__NEWLINE__/__END_CERT__/' | sed -e 's/ /__SPACE__/g' | xargs) ; 
 	export PROD_HASURA_SECRET=$$(grep HASURA_GRAPHQL_ADMIN_SECRET ../sc-common/.env.production | sed -e 's/.*\=//' ) ;\

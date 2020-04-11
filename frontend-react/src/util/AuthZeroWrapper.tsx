@@ -109,6 +109,7 @@ const millisToExp = (token: string) => {
 
 export const Auth0Context = React.createContext<Auth0Context>(undefined as any);
 export const useAuth0 = () => useContext(Auth0Context);
+
 export const Auth0Provider: React.FC<
   Omit<Auth0ClientOptions, "prompt"> & {
     prompt: "select_account consent" | Auth0ClientOptions["prompt"];
@@ -143,35 +144,33 @@ export const Auth0Provider: React.FC<
       setAuth0Client(auth0FromHook);
       // const tempTok = await auth0FromHook.getTokenSilently();
       // console.log("tok", tempTok);
-      console.log(initOptions);
+      console.log(initOptions, window.location.href, window.location.search);
       // console.log(auth0FromHook);
       if (
         window.location.href.includes("oauth/auth0") &&
         window.location.search.includes("code=")
       ) {
-        // console.log("INCLUDES CODE");
+        console.log("Got code from auth0: ", window.location.search);
         const { appState } = await auth0FromHook.handleRedirectCallback();
         // console.log(appState);
         onRedirectCallback(appState);
       }
-
       const isAuthenticated = await auth0FromHook.isAuthenticated();
-
       setIsAuthenticated(isAuthenticated);
-
       // console.log("isAuthed:", isAuthenticated);
       if (isAuthenticated) {
         console.debug("IsAuthenticated is true");
         const user = await auth0FromHook.getUser();
         const token = await auth0FromHook.getIdTokenClaims();
+        // RELOAD logic to
         if (token) {
           setToken(token.__raw);
-          const refresh = millisToExp(token.__raw);
-          if (refresh) {
-            setTimeout(() => {
-              window.location.reload();
-            }, refresh - 10000);
-          }
+          // const refresh = millisToExp(token.__raw);
+          // if (refresh) {
+          //   setTimeout(() => {
+          //     window.location.reload();
+          //   }, refresh - 10000);
+          // }
         }
         isCheckedAuthZeroUser(user) && setAuthZeroUser(user);
       }

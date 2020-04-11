@@ -3,11 +3,11 @@ import ReactJson from "react-json-view";
 import { useSampleQuery } from "../__generated__/components";
 
 export const SampleQuery: React.FC = () => {
-  const result = useSampleQuery();
+  const { data, loading, error } = useSampleQuery();
   return (
-    <div>
+    <div style={{ textAlign: "left" }}>
       sample query: <br />
-      <ReactJson src={result} />{" "}
+      <ReactJson src={{ data, loading, error }} />{" "}
     </div>
   );
 };

@@ -9,6 +9,7 @@ import {
 
 import { GraphQLClient } from "graphql-request";
 import React from "react";
+import { getDiffieHellman } from "crypto";
 // import { WebSocketLink } from "apollo-link-ws";
 // import { getMainDefinition } from "apollo-utilities";
 import { getSdk } from "../__generated__/requests";
@@ -25,7 +26,8 @@ export const GqlRequestContext = React.createContext<GqlRequestClient>(
 //   s.replace(/^http:\/\//, "ws://").replace(/^https:\/\//, "wss://");
 
 export const MakeApolloClient: React.FC = ({ children }) => {
-  const { token } = useAuth0() || {};
+  const { token, isAuthenticated } = useAuth0() || {};
+  console.log("MakeApolloClient, token: ", token, "is auth: ", isAuthenticated);
   const httpLink = createHttpLink({
     uri: process.env.REACT_APP_HASURA_ENDPOINT,
   });

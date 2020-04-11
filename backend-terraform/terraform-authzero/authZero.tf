@@ -37,11 +37,11 @@ resource "auth0_client" "client" {
   callbacks = [
     "${var.app_site}/oauth/auth0"
   ]
-  oidc_conformant = true
+  oidc_conformant = false
   allowed_logout_urls = [
-    "${var.app_site}/logout",
+    "${var.app_site}",
   ]
-  grant_types = ["refresh_token", "authorization_code"]
+  grant_types = ["refresh_token", "authorization_code", "implicit"]
   allowed_origins = [
     var.app_site
   ]

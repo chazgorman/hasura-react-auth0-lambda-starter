@@ -20,7 +20,8 @@
     "react-json-view": "^1.19.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "use-query-params": "^0.6.0"
   },
   "scripts": {
     "start": "cd ../common && make setup_env && cd - && react-scripts start",
@@ -51,6 +52,7 @@
     "@graphql-codegen/typescript-operations": "^1.13.2",
     "@graphql-codegen/typescript-react-apollo": "^1.13.2",
     "@types/jsonwebtoken": "^8.3.9",
-    "@types/react-router-dom": "^5.1.4"
+    "@types/react-router-dom": "^5.1.4",
+    "webpack-cli": "^3.3.11"
   }
 }

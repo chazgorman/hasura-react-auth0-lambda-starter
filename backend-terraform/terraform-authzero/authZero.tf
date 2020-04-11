@@ -29,15 +29,19 @@ resource "auth0_tenant" "tenant" {
 }
 
 resource "auth0_client" "client" {
-  name            = "${var.app_name}-${var.env}"
-  description     = var.authzero_description
-  app_type        = var.authzero_app_type
-  logo_uri        = "${var.static_site}/logo.png"
+  name        = "${var.app_name}-${var.env}"
+  description = var.authzero_description
+  app_type    = var.authzero_app_type
+  logo_uri    = "${var.static_site}/logo.png"
+
+  callbacks = [
+    "${var.app_site}/oauth/auth0"
+  ]
   oidc_conformant = true
   allowed_logout_urls = [
     "${var.app_site}/logout",
   ]
-  grant_types = ["refresh_token"]
+  grant_types = ["refresh_token", "authorization_code"]
   allowed_origins = [
     var.app_site
   ]

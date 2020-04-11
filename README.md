@@ -4,6 +4,7 @@
 
 ```
 cd common;
+yarn
 cp env.example .env.development.base
 ```
 
@@ -14,6 +15,8 @@ Set values for the following:
 ```
 make setup_env && make setup_env && make setup_env # long story.. recursive vars
 ```
+
+
 
 1. Create a new Auth0 Account and tenant.
 2. Create a new machine to machine application in Auth0.  
@@ -26,3 +29,6 @@ make tf_setup
 make tf_authzero_init
 make tf_authzero_apply
 ```
+
+In Auth0, find the client Id for your newly created application and set the `REACT_APP_AUTH0_CLIENT_ID`
+variable in .env.development.base

@@ -7,7 +7,7 @@ services:
     ports:
       - "${HASURA_POSTGRES_EXPOSED_PORT}:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - /tmp/.${NAME}-cache:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: hasura
   graphql-engine:

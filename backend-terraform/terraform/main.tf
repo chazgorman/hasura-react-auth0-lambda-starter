@@ -8,6 +8,6 @@ terraform {
     encrypt = true
     bucket  = "terraform-state-storage-s3.speedycal.com"
     region  = "us-west-2"
-    key     = "tfstate-files/production.tfstate"
+    key     = "tfstate-files/project/development.tfstate"
   }
 }

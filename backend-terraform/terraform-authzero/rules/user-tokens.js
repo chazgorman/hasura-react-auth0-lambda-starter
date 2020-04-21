@@ -3,7 +3,7 @@ function (user, context, callback) {
   const idp = user.identities[0];
   console.log(JSON.stringify(idp, null, '  '));
   const mutation = `
-  mutation ($owner_id: uuid!, $refresh_token: String!, $access_token: String!, $provider: String!, $raw: jsonb!) {
+  mutation ($owner_id: uuid!, $refresh_token: String, $access_token: String, $provider: String!, $raw: jsonb!) {
     insert_tokens(objects: [{refresh_token: $refresh_token, access_token: $access_token, owner_id: $owner_id, provider: $provider, raw: $raw}], on_conflict: {constraint: tokens_pkey, update_columns: [access_token, refresh_token, raw, updated_at]}) {
       returning {
         access_token

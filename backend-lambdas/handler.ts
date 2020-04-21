@@ -1,6 +1,7 @@
 import "source-map-support/register";
 
 import { ApolloServer, gql } from "apollo-server-lambda";
+import { GraphQLScalarType, Kind } from "graphql";
 
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { Handler } from "aws-lambda";
@@ -34,10 +35,40 @@ export const ping: Handler = (_e, _c, callback) =>
   });
 
 const typeDefs = gql`
+  scalar uuid
   type Query {
-    l_ping: String
+    l_ping(id: uuid!): String
   }
 `;
+
+const uuid = new GraphQLScalarType({
+  name: "uuid",
+  description:
+    "The UUID scalar type represents UUID values as specified by [RFC 4122](https://tools.ietf.org/html/rfc4122).",
+  serialize: value => {
+    // if (!isUUID(value)) {
+    //   throw new TypeError(`UUID cannot represent non-UUID value: ${value}`);
+    // }
+
+    return value.toLowerCase();
+  },
+  parseValue: value => {
+    // if (!isUUID(value)) {
+    //   throw new TypeError(`UUID cannot represent non-UUID value: ${value}`);
+    // }
+
+    return value.toLowerCase();
+  },
+  parseLiteral: ast => {
+    if (ast.kind === Kind.STRING) {
+      // if (isUUID(ast.value)) {
+      return ast.value;
+      // }
+    }
+
+    return undefined;
+  }
+});
 
 const Mutation: any = {};
 
@@ -49,7 +80,7 @@ const Query: any = {
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers: { Query },
+  resolvers: { uuid, Query },
   context: ({ event, context }) => ({
     headers: event.headers,
     functionName: context.functionName,

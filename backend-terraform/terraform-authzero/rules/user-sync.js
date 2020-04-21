@@ -1,14 +1,14 @@
 function (user, context, callback) {
-    const userId = user.app_metadata.uuid;
+    const user_id = user.app_metadata.uuid;
     const name = user.name;
     const given_name = user.given_name;
     const family_name = user.family_name;
     const picture = user.picture;
     const email = user.email;
   
-    const mutation = `mutation($userId: uuid!, $email: String!, $family_name: String, $given_name: String, $name: String, $picture: String) {
+    const mutation = `mutation($user_id: uuid!, $email: String!, $family_name: String, $given_name: String, $name: String, $picture: String) {
       insert_users(objects: [{
-          id: $userId,
+          id: $user_id,
           name: $name,
           given_name: $given_name,
           family_name: $family_name,
@@ -32,7 +32,7 @@ function (user, context, callback) {
         url: configuration.HASURA_ENDPOINT,
         body: JSON.stringify({
           query: mutation,
-          variables: { email, picture, userId, name, given_name, family_name }
+          variables: { email, picture, user_id, name, given_name, family_name }
         })
       },
       function(error, response, body) {

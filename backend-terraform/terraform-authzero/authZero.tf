@@ -8,7 +8,7 @@ provider "auth0" {
 
 resource "auth0_tenant" "tenant" {
   default_audience = "https://${var.authzero_domain}/api/v2/"
-  friendly_name    = "${var.app_name}-${var.env}"
+  friendly_name    = "${var.name}-${var.env}"
   picture_url      = "${var.static_site}/logo.png"
   support_email    = "support@${var.app_email_domain}"
   support_url      = "${var.static_site}/support"
@@ -21,6 +21,7 @@ resource "auth0_tenant" "tenant" {
   flags {
     universal_login = true
   }
+
   allowed_logout_urls = [
     "${var.static_site}"
   ]
@@ -29,7 +30,7 @@ resource "auth0_tenant" "tenant" {
 }
 
 resource "auth0_client" "client" {
-  name        = "${var.app_name}-${var.env}"
+  name        = "${var.name}-${var.env}"
   description = var.authzero_description
   app_type    = var.authzero_app_type
   logo_uri    = "${var.static_site}/logo.png"
@@ -64,19 +65,19 @@ resource "auth0_rule_config" "endpoint" {
 }
 
 resource "auth0_rule" "add_claims" {
-  name    = "TF-${var.app_name}-hasura-add-user-claims"
+  name    = "TF-${var.name}-hasura-add-user-claims"
   script  = file("${path.module}/rules/add-claims.js")
   enabled = true
   order   = 12
 }
 resource "auth0_rule" "user_sync" {
-  name    = "TF-${var.app_name}-hasura-sync-user"
+  name    = "TF-${var.name}-hasura-sync-user"
   script  = file("${path.module}/rules/user-sync.js")
   enabled = true
   order   = 15
 }
 resource "auth0_rule" "sync_tokens" {
-  name    = "TF-${var.app_name}-hasura-sync-tokens"
+  name    = "TF-${var.name}-hasura-sync-tokens"
   script  = file("${path.module}/rules/user-tokens.js")
   enabled = true
   order   = 19
@@ -105,7 +106,7 @@ resource "auth0_connection" "facebook" {
 }
 
 # resource "auth0_resource_server" "server" {
-#   name       = "${var.app_name}-${var.env} Resource Server (Managed by Terraform)"
+#   name       = "${var.name}-${var.env} Resource Server (Managed by Terraform)"
 #   identifier = "https://api.example.com/client-grant"
 #   scopes {
 #     value       = "https://www.googleapis.com/auth/calendar"

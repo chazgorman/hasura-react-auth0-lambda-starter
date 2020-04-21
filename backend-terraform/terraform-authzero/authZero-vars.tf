@@ -14,7 +14,7 @@ variable "static_site" {
   type = string
 }
 
-variable "app_name" {
+variable "name" {
   type = string
 }
 

@@ -6,33 +6,23 @@ variable "aws_region" {
   type = string
 }
 
-variable "domain" {
+variable "name" {
   type = string
 }
 
-# variable "ap_docker_version" {
-#   type = "string"
-# }
+variable "root_domain" {
+  type        = string
+  description = "The root domain of the project, i.e. myproject.xyz"
+}
 
-# variable "lambda_version" {
-#   type = "string"
-# }
-
-# variable "default_ami" {
-#   type    = "string"
-#   default = "ami-0d20dae74c64ffb05"
-# }
-
-# variable "service_name" {
-#   type = "string"
-# }
-
-variable "app_name" {
-  type = string
+variable "subdomain_hasura" {
+  type        = string
+  description = "Subdomain, relative to `root_domain` where hasura is served from"
 }
 
 variable "app_domain" {
-  type = string
+  type        = string
+  description = "Fully qualified domain name where the react app exists"
 }
 
 variable "app_site" {

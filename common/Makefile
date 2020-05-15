@@ -32,7 +32,7 @@ install:
 
 start_react:
 	export PORT=${REACT_APP_PORT} ;\
-	cd ${REACT_DIR} && yarn start
+	cd ${REACT_DIR} && yarn start:plaintty
 
 # due to recursive variable defs, you may have to run this 3 times (outside of make)
 # to fully expand all variables
@@ -45,12 +45,12 @@ generate_dotenv_files:
 	# cat "../frontend-ios/env.tpl.plist" | envsubst >> "../frontend-ios/env.plist"; \
 
 ngrok: 
-	export NGROK=.ngrok-generated.yml ;  envsubst < ngrok-base.yml > ${NGROK} ; \
-	ngrok start -config ${NGROK} --all 
+	export NGROK=.ngrok-generated.yml ;  envsubst < ngrok-base.yml > $${NGROK} ; \
+	ngrok start -config $${NGROK} --all
 
 ngrok_silent:
-	export NGROK=.ngrok-generated.yml ;  envsubst < ngrok-base.yml > ${NGROK} ; \
-	ngrok start -config ${NGROK} --all > /dev/null 
+	export NGROK=.ngrok-generated.yml ;  envsubst < ngrok-base.yml > $${NGROK} ; \
+	ngrok start -config $${NGROK} --all > /dev/null
 
 # TERRAFORM
 TF_DIR:=../backend-terraform

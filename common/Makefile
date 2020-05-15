@@ -25,6 +25,7 @@ test_env:
 install:
 	brew install gettext ;\
 	brew link --force gettext  ;\
+	yarn && cd - && \
 	cd ${REACT_DIR} && yarn && cd - && \
 	cd ${LAMBDA_DIR} && yarn && cd -
 
@@ -153,8 +154,14 @@ hasura_up_delay:
 
 hasura_metadata_reload:
 	cd ../backend-hasura; \
-	echo "MD UPDATE"; \
-	hasura metadata reload --skip-update-check --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET} --endpoint http://localhost:${HASURA_EXPOSED_PORT} 
+	REMOTE_ENDPOINT=https://$${SUBDOMAIN_HASURA}.$${ROOT_DOMAIN} ; \
+	API_ENDPOINT=$${REMOTE_ENDPOINT}/v1/query  ; \
+	echo "MD UPDATE on $${REMOTE_ENDPOINT} and reload to $${API_ENDPOINT} "; \
+	curl -f -H "x-hasura-admin-secret: ${HASURA_GRAPHQL_ADMIN_SECRET}" \
+	    -X POST \
+	    -d "{\"type\": \"reload_remote_schema\", \"args\": {\"name\": \"LAMBDA_ENDPOINT\"}}"  "$${API_ENDPOINT}" && \
+	echo "Remote schema successful" \
+	hasura metadata reload --skip-update-check --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET} --endpoint $${REMOTE_ENDPOINT}
 
 hasura_migrate_apply:
 	cd ../backend-hasura; \

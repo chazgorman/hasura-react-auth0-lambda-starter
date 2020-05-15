@@ -12,7 +12,7 @@ services:
       POSTGRES_PASSWORD: hasura
   graphql-engine:
     container_name: "hasura_gqlengine_${NAME}"
-    image: hasura/graphql-engine:v1.1.0
+    image: hasura/graphql-engine:v1.2.1
     ports:
       - "${HASURA_EXPOSED_PORT}:8080"
     depends_on:

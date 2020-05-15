@@ -7,7 +7,7 @@
     "concurrently": "^5.1.0"
   },
   "scripts": {
-    "all": "yarn run generate_dotenv && concurrently  --kill-others-on-fail --names HASURA,HASURA_CONSOLE,NGROK,SLS \"make hasura_up_delay\" \"make hasura_console_delay\" \"make ngrok_silent\" \"make sls_local\"",
+    "all": "yarn run generate_dotenv && concurrently  --kill-others-on-fail --names REACT,HASURA,HASURA_CONSOLE,NGROK,SLS \"make start_react\" \"make hasura_up_delay\" \"make hasura_console_delay\" \"make ngrok_silent\" \"make sls_local\"",
     "initial_make_setup": "cp env.example .env.${USER}-development.base && cp env.example .env.${USER}-development",
     "generate_dotenv": "make generate_dotenv_files && make generate_dotenv_files && make generate_dotenv_files && make generate_dotenv_files"
   }

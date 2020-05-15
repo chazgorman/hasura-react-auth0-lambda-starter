@@ -4,7 +4,7 @@ tunnels:
   app:
     proto: http
     bind_tls: true
-    addr: 3000
+    addr: ${REACT_APP_PORT}
     subdomain: ${SUBDOMAIN_APP}
   lambdas:
     proto: http

@@ -4,9 +4,12 @@ import * as jwt from "jsonwebtoken";
 // import { Spin, Typography } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
+import createAuth0Client, {
+  Auth0ClientOptions,
+  RedirectLoginResult,
+} from "@auth0/auth0-spa-js";
 
 import Auth0Client from "@auth0/auth0-spa-js/dist/typings/Auth0Client";
-import createAuth0Client from "@auth0/auth0-spa-js";
 
 // import * as _ from "lodash";
 

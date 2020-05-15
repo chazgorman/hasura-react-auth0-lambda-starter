@@ -3,6 +3,7 @@ ENV:=${USER}-development
 # DOTENV := .env
 
 REACT_DIR:=../frontend-react
+LAMBDA_DIR:=../backend-lambdas
 
 # ECR_REPO_URL_BASE := 840787491930.dkr.ecr.us-west-2.amazonaws.com
 # ECR_AP_BASE_REPO_NAME := ap_karada_base
@@ -22,9 +23,15 @@ test_env:
 	echo "Using environment ${ENV}"
 
 install:
-	brew install gettext
-	brew link --force gettext 
+	brew install gettext ;\
+	brew link --force gettext  ;\
+	cd ${REACT_DIR} && yarn && cd - && \
+	cd ${LAMBDA_DIR} && yarn && cd -
 
+
+start_react:
+	export PORT=${REACT_APP_PORT} ;\
+	cd ${REACT_DIR} && yarn start
 
 # due to recursive variable defs, you may have to run this 3 times (outside of make)
 # to fully expand all variables
@@ -76,7 +83,6 @@ tf_authzero_apply:
 react_start:
 	cd ${REACT_DIR} ; yarn run start
 
-LAMBDA_DIR:=../backend-lambdas
 
 sls_info: 
 	cd ${LAMBDA_DIR} && \

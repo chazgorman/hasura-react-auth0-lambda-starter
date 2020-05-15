@@ -1,4 +1,4 @@
-ENV:=development
+ENV:=${USER}-development
 # ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 # DOTENV := .env
 
@@ -19,7 +19,7 @@ SHELL=/bin/bash
 include .env.${ENV}
 
 test_env: 
-	echo ${HASURA_GRAPHQL_JWT_KEY_RAW}
+	echo "Using environment ${ENV}"
 
 install:
 	brew install gettext

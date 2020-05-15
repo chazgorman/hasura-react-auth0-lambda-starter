@@ -1,7 +1,3 @@
-variable "domain" {
-  type = string
-}
-
 variable "app_email_domain" {
   type = string
 }

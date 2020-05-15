@@ -6,8 +6,8 @@ provider "aws" {
 terraform {
   backend "s3" {
     encrypt = true
-    bucket  = "terraform-state-storage-s3.project.xyz"
+    bucket  = "terraform-state-storage-s3.closematrix.com"
     region  = "us-west-2"
-    key     = "tfstate-files/project/development.tfstate"
+    key     = "tfstate-files/{{var.name}}/max-development.tfstate"
   }
 }

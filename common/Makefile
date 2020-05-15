@@ -102,7 +102,7 @@ sls_remove:
 
 sls_local: 
 	cd ${LAMBDA_DIR} && \
-	node --max-old-space-size=4096 node_modules/serverless/bin/serverless offline --useSeparateProcesses --useChildProcesses start 
+	NODE_ENV=${ENV} node --max-old-space-size=4096 node_modules/serverless/bin/serverless offline --useSeparateProcesses --useChildProcesses start 
 
 sls_deploy_aws:
 	cd ${LAMBDA_DIR} && \

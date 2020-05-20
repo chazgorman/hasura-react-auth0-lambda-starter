@@ -47,7 +47,7 @@ module "hasura" {
     },
     {
       name  = "HASURA_GRAPHQL_CORS_DOMAIN"
-      value = "https://*.${var.root_domain}:443, https://*.${var.root_domain}"
+      value = "https://*.${env}.${var.root_domain}, https://*.${var.root_domain}"
     },
   ]
 }

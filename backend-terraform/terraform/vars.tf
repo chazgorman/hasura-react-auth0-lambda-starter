@@ -20,9 +20,15 @@ variable "subdomain_hasura" {
   description = "Subdomain, relative to `root_domain` where hasura is served from"
 }
 
-variable "app_domain" {
+variable "app_subdomain" {
   type        = string
-  description = "Fully qualified domain name where the react app exists"
+  description = "subdomain relative to root_domain name where the react app exists"
+}
+
+variable "aws_profile" {
+  type        = string
+  default     = "my-profile"
+  description = "for generating the cloudfront invalidation command"
 }
 
 variable "app_site" {
@@ -54,10 +60,6 @@ variable "hasura_version" {
   type    = string
   default = "v1.1.0"
 }
-
-# variable "hasura_endpoint" {
-#   type = "string"
-# }
 
 variable "hasura_jwt_algo" {
   type    = string

@@ -36,13 +36,15 @@ const Logout = () => {
 
 const OauthLanding: React.FC = () => {
   const history = useHistory();
+  const { handleRedirectCallback } = useAuth0();
   const [queryParams] = useQueryParams({
     error: StringParam,
     error_description: StringParam,
   });
   if (!queryParams.error && !queryParams.error_description) {
-    console.log("oauth landing.. redirect to home");
-    setTimeout(() => history.push("/admin"), 1000);
+    handleRedirectCallback?.().then(() =>
+      setTimeout(() => history.replace("/admin"), 100)
+    );
     return <Link to="/">oauth next step</Link>;
   }
   return <div> ERROR</div>;
@@ -59,29 +61,27 @@ export const popRedirectOnLogin = () => {
 };
 
 const AppInner: React.FC = () => {
-  const { isAuthenticated, loginWithRedirect, logout } = useAuth0() || {};
+  const { isAuthenticated, loginWithRedirect } = useAuth0() || {};
   return (
-    <MakeApolloClient>
-      <Router>
-        <Switch>
-          <Route exact path="/logout" component={Logout} />
-          <Route path="/oauth/auth0">
-            <OauthLanding />
-          </Route>
-          <Route exact path="/">
-            {isAuthenticated ? (
-              <Redirect to="/admin" />
-            ) : (
-              <div>
-                Please login
-                <button onClick={() => loginWithRedirect()}>login</button>
-              </div>
-            )}
-          </Route>
-          <Route exact path="/admin" component={Admin} />
-        </Switch>
-      </Router>
-    </MakeApolloClient>
+    <Router>
+      <Switch>
+        <Route exact path="/logout" component={Logout} />
+        <Route path="/oauth/auth0">
+          <OauthLanding />
+        </Route>
+        <Route exact path="/">
+          {isAuthenticated ? (
+            <Redirect to="/admin" />
+          ) : (
+            <div>
+              Please login
+              <button onClick={() => loginWithRedirect()}>login</button>
+            </div>
+          )}
+        </Route>
+        <Route exact path="/admin" component={Admin} />
+      </Switch>
+    </Router>
   );
 };
 
@@ -95,7 +95,9 @@ function App() {
         client_id={process.env.REACT_APP_AUTH0_CLIENT_ID || ""}
         domain={process.env.REACT_APP_AUTH0_DOMAIN || ""}
       >
-        <AppInner />
+        <MakeApolloClient>
+          <AppInner />
+        </MakeApolloClient>
       </Auth0Provider>
     </div>
   );

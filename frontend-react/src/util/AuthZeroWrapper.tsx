@@ -1,16 +1,24 @@
 import * as jwt from "jsonwebtoken";
 
-// src/react-auth0-spa.js
-// import { Spin, Typography } from "antd";
-import React, { useContext, useEffect, useState } from "react";
-import { Redirect, Route, RouteProps } from "react-router-dom";
-import createAuth0Client, {
+import {
+  Auth0Client,
   Auth0ClientOptions,
   RedirectLoginResult,
 } from "@auth0/auth0-spa-js";
+import React, { useContext, useEffect, useState } from "react";
+import { Redirect, Route, RouteProps } from "react-router-dom";
 
-import Auth0Client from "@auth0/auth0-spa-js/dist/typings/Auth0Client";
+const CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
+const DOMAIN = process.env.REACT_APP_AUTH0_DOMAIN;
+const REDIRECT_URI = window.location.origin + "/oauth/auth0";
 
+if (!CLIENT_ID) {
+  throw new Error("missing auth0 client id");
+}
+
+if (!DOMAIN) {
+  throw new Error("missing auth0 domain");
+}
 // import * as _ from "lodash";
 
 export const DEFAULT_REDIRECT_CALLBACK = (_?: any) => {
@@ -82,6 +90,7 @@ function isCheckedAuthZeroUser(
   });
   return true;
 }
+
 interface Auth0Context {
   isAuthenticated: boolean; // Auth0Client["isAuthenticated"];
   authZeroUser?: CheckedAuthZeroUser;
@@ -102,7 +111,7 @@ const decodeTokenExp = (token: string) => {
   return exp ? exp * 1000 : null;
 };
 
-const millisToExp = (token: string) => {
+export const millisToExp = (token: string) => {
   const exp = decodeTokenExp(token);
   if (!exp) {
     return null;
@@ -110,14 +119,13 @@ const millisToExp = (token: string) => {
   return exp - Date.now();
 };
 
-export const Auth0Context = React.createContext<Auth0Context>(undefined as any);
+export const Auth0Context = React.createContext<Partial<Auth0Context>>({});
 export const useAuth0 = () => useContext(Auth0Context);
 
-export const Auth0Provider: React.FC<
-  Omit<Auth0ClientOptions, "prompt"> & {
-    prompt: "select_account consent" | Auth0ClientOptions["prompt"];
-  }
-> = ({
+export const Auth0Provider: React.FC<{
+  prompt: "select_account consent" | Auth0ClientOptions["prompt"];
+  access_type: "offline";
+}> = ({
   children,
   //   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   ...initOptions
@@ -132,48 +140,40 @@ export const Auth0Provider: React.FC<
 
   useEffect(() => {
     const initAuth0 = async () => {
-      // console.log(initOptions);
-      const auth0FromHook = await createAuth0Client(
-        initOptions as Auth0ClientOptions
-      )
-        .catch((e) => {
-          console.error(e);
-          throw new Error(e);
-        })
-        .then((e) => {
-          // console.log(e);
-          return e;
-        });
-      setAuth0Client(auth0FromHook);
-      // const tempTok = await auth0FromHook.getTokenSilently();
-      // console.log("tok", tempTok);
+      console.log("initauth zero", initOptions);
+      const auth0 = new Auth0Client({
+        domain: DOMAIN,
+        client_id: CLIENT_ID,
+        redirect_uri: REDIRECT_URI,
+        authorizeTimeoutInSeconds: 15,
+      });
+      try {
+        await auth0.getTokenSilently();
+      } catch (e) {
+        console.warn(`get token silently `, e);
+      }
+      setAuth0Client(auth0);
       console.log(initOptions, window.location.href, window.location.search);
       // console.log(auth0FromHook);
-      if (
-        window.location.href.includes("oauth/auth0") &&
-        window.location.search.includes("code=")
-      ) {
-        console.log("Got code from auth0: ", window.location.search);
-        const { appState } = await auth0FromHook.handleRedirectCallback();
-        // console.log(appState);
-        onRedirectCallback(appState);
-      }
-      const isAuthenticated = await auth0FromHook.isAuthenticated();
+      // if (
+      //   window.location.href.includes("oauth/auth0") &&
+      //   window.location.search.includes("code=")
+      // ) {
+      //   console.log("Got code from auth0: ", window.location.search);
+      //   const { appState } = await auth0FromHook.handleRedirectCallback();
+      //   // console.log(appState);
+      //   onRedirectCallback(appState);
+      // }
+      const isAuthenticated = await auth0.isAuthenticated();
+      // console.log("TCL: : isAuthenticated", isAuthenticated);
       setIsAuthenticated(isAuthenticated);
-      // console.log("isAuthed:", isAuthenticated);
       if (isAuthenticated) {
         console.debug("IsAuthenticated is true");
-        const user = await auth0FromHook.getUser();
-        const token = await auth0FromHook.getIdTokenClaims();
-        // RELOAD logic to
+        const user = await auth0.getUser();
+        const token = await auth0.getIdTokenClaims();
         if (token) {
+          // console.log("TCL: about to set token", token);
           setToken(token.__raw);
-          // const refresh = millisToExp(token.__raw);
-          // if (refresh) {
-          //   setTimeout(() => {
-          //     window.location.reload();
-          //   }, refresh - 10000);
-          // }
         }
         isCheckedAuthZeroUser(user) && setAuthZeroUser(user);
       }
@@ -202,15 +202,16 @@ export const Auth0Provider: React.FC<
   };
 
   const handleRedirectCallback = async () => {
-    // if (!window.location.href.match(/.*oauth\/auth0.*/)) {
-    //   console.log("not auth0");
-    //   return;
-    // }
+    if (!window.location.href.match(/.*oauth\/auth0.*/)) {
+      throw new Error("not an auth0 response route");
+      // return;
+    }
     console.log("hRC");
     if (!auth0Client) {
       throw new Error("Missing auth0client in redirect");
     }
     setLoading(true);
+    console.log("about to hRC");
     const res = await auth0Client.handleRedirectCallback();
     const user = await auth0Client.getUser();
     setLoading(false);
@@ -248,15 +249,26 @@ export const Auth0Provider: React.FC<
   );
 };
 
-export const AuthedRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
+export const AuthedRoute: React.FC<RouteProps> = ({
+  component,
+  children,
+  ...rest
+}) => {
   const { isAuthenticated, loading } = useAuth0() || {};
+  // console.log("TCL: AuthedRoute: isAuthenticated", isAuthenticated);
   if (loading) {
     return <div> Loading user data from autho</div>;
   }
   return (
     <Route
       {...rest}
-      render={() => (isAuthenticated ? children : <Redirect to="/"></Redirect>)}
+      render={() =>
+        isAuthenticated ? (
+          React.createElement(component as any, {}) ?? children
+        ) : (
+          <Redirect to="/"></Redirect>
+        )
+      }
     />
   );
 };

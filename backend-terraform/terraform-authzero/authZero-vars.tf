@@ -1,5 +1,6 @@
 variable "app_email_domain" {
-  type = string
+  type        = string
+  description = "Fully qualified (since it could be separate from root_domain) domain for email"
 }
 
 variable "app_site" {

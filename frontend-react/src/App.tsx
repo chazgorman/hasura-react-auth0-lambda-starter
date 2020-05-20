@@ -1,8 +1,10 @@
 import "./App.css";
 
 import { Auth0Provider, useAuth0 } from "./util/AuthZeroWrapper";
+import { Layout, Menu } from "antd";
 import {
   Link,
+  Redirect,
   Route,
   BrowserRouter as Router,
   Switch,
@@ -11,10 +13,13 @@ import {
 } from "react-router-dom";
 import { StringParam, useQueryParams } from "use-query-params";
 
+import Admin from "./admin";
 import { MakeApolloClient } from "./util/MakeApolloClient";
 import React from "react";
 import ReactJson from "react-json-view";
 import { SampleQuery } from "./util/samples";
+
+const { Header, Content, Footer, Sider } = Layout;
 
 const Logout = () => {
   const authZero = useAuth0();
@@ -37,7 +42,7 @@ const OauthLanding: React.FC = () => {
   });
   if (!queryParams.error && !queryParams.error_description) {
     console.log("oauth landing.. redirect to home");
-    setTimeout(() => history.push("/test"), 1000);
+    setTimeout(() => history.push("/admin"), 1000);
     return <Link to="/">oauth next step</Link>;
   }
   return <div> ERROR</div>;
@@ -63,18 +68,9 @@ const AppInner: React.FC = () => {
           <Route path="/oauth/auth0">
             <OauthLanding />
           </Route>
-          <Route exact path="/test">
-            <Link to="/">go home</Link>
-          </Route>
           <Route exact path="/">
             {isAuthenticated ? (
-              <div>
-                authed
-                <br />
-                <SampleQuery />
-                <br />
-                <button onClick={() => logout()}>logout</button>
-              </div>
+              <Redirect to="/admin" />
             ) : (
               <div>
                 Please login
@@ -82,6 +78,7 @@ const AppInner: React.FC = () => {
               </div>
             )}
           </Route>
+          <Route exact path="/admin" component={Admin} />
         </Switch>
       </Router>
     </MakeApolloClient>

@@ -17,9 +17,10 @@ function (user, context, callback) {
 
 
     `;
-  if (!idp.refresh_token) {
-    throw new Error ('missing refresh token: ' + JSON.stringify(idp));
-  }
+    // uncomment if you need refersh tokens
+  // if (!idp.refresh_token) {
+  //   throw new Error ('missing refresh token: ' + JSON.stringify(idp));
+  // }
   if (!idp.access_token) {
     throw new Error ('missing access token: ' + JSON.stringify(idp));
   }

@@ -1,7 +1,6 @@
 import "./App.css";
 
 import { Auth0Provider, useAuth0 } from "./util/AuthZeroWrapper";
-import { Layout, Menu } from "antd";
 import {
   Link,
   Redirect,
@@ -9,21 +8,16 @@ import {
   BrowserRouter as Router,
   Switch,
   useHistory,
-  useLocation,
 } from "react-router-dom";
 import { StringParam, useQueryParams } from "use-query-params";
 
-import Admin from "./admin";
+import Admin from "./Admin";
 import { MakeApolloClient } from "./util/MakeApolloClient";
 import React from "react";
-import ReactJson from "react-json-view";
-import { SampleQuery } from "./util/samples";
-
-const { Header, Content, Footer, Sider } = Layout;
 
 const Logout = () => {
-  const authZero = useAuth0();
-  authZero.logout();
+  const { logout } = useAuth0();
+  logout?.();
   // const [queryParams] = useQueryParams({ redirectTo: StringParam });
   // const history = useHistory();
   // if (queryParams?.redirectTo) {
@@ -75,7 +69,7 @@ const AppInner: React.FC = () => {
           ) : (
             <div>
               Please login
-              <button onClick={() => loginWithRedirect()}>login</button>
+              <button onClick={() => loginWithRedirect?.()}>login</button>
             </div>
           )}
         </Route>
@@ -88,13 +82,7 @@ const AppInner: React.FC = () => {
 function App() {
   return (
     <div className="App">
-      <Auth0Provider
-        redirect_uri={window.location.origin + "/oauth/auth0"}
-        access_type="offline"
-        prompt="select_account consent"
-        client_id={process.env.REACT_APP_AUTH0_CLIENT_ID || ""}
-        domain={process.env.REACT_APP_AUTH0_DOMAIN || ""}
-      >
+      <Auth0Provider access_type="offline" prompt="select_account consent">
         <MakeApolloClient>
           <AppInner />
         </MakeApolloClient>

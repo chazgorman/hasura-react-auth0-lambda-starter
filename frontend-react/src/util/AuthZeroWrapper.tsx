@@ -130,7 +130,7 @@ export const Auth0Provider: React.FC<{
   //   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   ...initOptions
 }) => {
-  const onRedirectCallback = DEFAULT_REDIRECT_CALLBACK;
+  // const onRedirectCallback = DEFAULT_REDIRECT_CALLBACK;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authZeroUser, setAuthZeroUser] = useState<CheckedAuthZeroUser>();
   const [token, setToken] = useState<string | undefined>();

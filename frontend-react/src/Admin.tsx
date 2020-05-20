@@ -1,13 +1,15 @@
 import React from "react";
 import ReactJson from "react-json-view";
+import { useAuth0 } from "./util/AuthZeroWrapper";
 import { useIsAdmin } from "./util/auth";
 
 const Admin: React.FC = () => {
-  const token = useIsAdmin();
+  const isAdmin = useIsAdmin();
+  const { authZeroUser } = useAuth0();
   return (
     <div>
-      hi
-      <ReactJson src={token} />
+      hi {isAdmin ? "admin" : "error"}
+      <ReactJson src={authZeroUser || {}} />{" "}
     </div>
   );
 };

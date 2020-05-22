@@ -11,6 +11,7 @@ module "hasura" {
 
   #   app_subdomain            = "app.${var.env}."
   hasura_version_tag       = var.hasura_version
+  hasura_unique_identifier = "hasura-${var.name}-${var.env}"
   hasura_admin_secret      = var.hasura_graphql_admin_secret
   hasura_jwt_secret_algo   = var.hasura_jwt_algo
   hasura_jwt_secret_key    = var.hasura_jwt_secret_key

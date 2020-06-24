@@ -1,5 +1,12 @@
 # Hasura React Auth0 Lambda Starter
 
+## Coming Soon
+
+*Need to import from an existing project*
+
+1. skeletons for an iOS SwiftUI app
+2. gitlab ci examples
+
 ## Setup
 
 ```
